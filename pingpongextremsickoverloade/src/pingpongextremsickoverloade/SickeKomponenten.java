@@ -63,6 +63,18 @@ public class SickeKomponenten extends JComponent {
     private int zufallsY = 0;
     private boolean inverted = false;
     private boolean botgame = false;
+    private long firstFrame;
+    private int frames;
+    private long currentFrame;
+    private int fps;
+
+    public int getFps() {
+        return fps;
+    }
+
+    public void setFps(int fps) {
+        this.fps = fps;
+    }
 
     public void setbotgame(boolean botgame) {
         this.botgame = botgame;
@@ -262,7 +274,13 @@ public class SickeKomponenten extends JComponent {
     private int player2X = getWidth() - 50;
 
     public void paint(Graphics g) {
-
+        frames++;
+        currentFrame = System.currentTimeMillis();
+        if (currentFrame > firstFrame + 1000) {
+            firstFrame = currentFrame;
+            fps = frames;
+            frames = 0;
+        }
         Graphics2D sickeGrafik = (Graphics2D) g;
         sickeGrafik.setColor(Color.WHITE);
 
@@ -378,7 +396,7 @@ public class SickeKomponenten extends JComponent {
                 g.fill(powerUp);
 
             }
-            
+
         }
         if (sekunden > 60) {
             sekunden = 0;
@@ -415,10 +433,10 @@ public class SickeKomponenten extends JComponent {
                     player1Size += 20;
 
                 }
-                
+
             } else if (player3AmBall == true) {
                 if (player3Size < getHeight() - 50) {
-                    player3Rectangle.setSize(player3Size+ 20, 20 );
+                    player3Rectangle.setSize(player3Size + 20, 20);
                     player3Size += 20;
 
                 }
@@ -451,19 +469,19 @@ public class SickeKomponenten extends JComponent {
                     player1Rectangle.setSize(20, player1Size - 20);
                     player1Size -= 20;
                 }
-                
-            }else if (player3AmBall == true) {
+
+            } else if (player3AmBall == true) {
                 if (player3Size > 20) {
-                    player3Rectangle.setSize( player3Size - 20,20);
+                    player3Rectangle.setSize(player3Size - 20, 20);
                     player3Size -= 20;
                 }
-                
-            }else if (player4AmBall == true) {
+
+            } else if (player4AmBall == true) {
                 if (player4Size > 20) {
-                    player4Rectangle.setSize( player4Size - 20,20);
+                    player4Rectangle.setSize(player4Size - 20, 20);
                     player4Size -= 20;
                 }
-                
+
             }
             sekunden = 0;
             powerUp.setSize(0, 0);

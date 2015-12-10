@@ -69,7 +69,7 @@ public class Pingpongextremsickoverloade {
         		sk.setSekudnen(sk.getSekunden()+1);
         		
         	}
-        	spielStand.setText(resultplayer1+": "+sk.getCounterplayer1()+"  ||  "+resultplayer2+": "+sk.getCounterplayer2()+"Counter"+sk.getSekunden());
+        	spielStand.setText(resultplayer1+": "+sk.getCounterplayer1()+"  ||  "+resultplayer2+": "+sk.getCounterplayer2()+"                   FPS: "+sk.getFps());
             
         	if(sk.getCounterplayer1()==i||sk.getCounterplayer2()==i){
             	if(sk.getCounterplayer1()>sk.getCounterplayer2()){
