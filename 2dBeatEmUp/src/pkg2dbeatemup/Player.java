@@ -18,11 +18,11 @@ private BufferedImage[] walkingRight = {Sprite.getSprite(0, 2), Sprite.getSprite
 private BufferedImage[] standing = {Sprite.getSprite(1, 0)};
 
 
-//private Animation walkLeft = new Animation(walkingLeft, 10);
-//private Animation walkRight = new Animation(walkingRight, 10);
-//private Animation standing = new Animation(standing, 10);
+private Animation walkLeft = new Animation(walkingLeft, 10);
+private Animation walkRight = new Animation(walkingRight, 10);
+private Animation stand = new Animation(standing, 10);
 //
 //
-//private Animation animation = standing;
+private Animation animation = stand;
    
 }

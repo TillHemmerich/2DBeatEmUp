@@ -40,7 +40,7 @@ public class gamePanel extends JPanel {
     public void paint(Graphics g) {
         paintBackground((Graphics2D) g);
         paintGround((Graphics2D) g);
-        
+        paintPlayer((Graphics2D) g);
         
     }
     
@@ -55,6 +55,10 @@ public class gamePanel extends JPanel {
         ground.setLocation(0,getHeight()-60);
         g.fill(ground);
         
+    }
+    public void paintPlayer(Graphics2D g){
+        Sprite.loadSprite("testsprite");
+        g.drawImage(Sprite.getSprite(WIDTH, WIDTH), null, 500, (int)(getHeight()-100));
     }
     
     
