@@ -26,7 +26,7 @@ import javax.swing.JPanel;
  */
 public class gamePanel extends JPanel {
     
-    private Image image = new ImageIcon(this.getClass().getResource("/bilder/2d_background.jpg")).getImage();
+    private Image image = new ImageIcon("Resources/bilder/2d_background.jpg").getImage();
    
     private Rectangle ground = new Rectangle(0, 0, 0, 0);
    

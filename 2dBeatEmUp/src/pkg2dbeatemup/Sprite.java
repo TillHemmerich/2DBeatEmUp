@@ -28,7 +28,7 @@ public class Sprite {
         BufferedImage sprite = null;
         
         try {
-            sprite = ImageIO.read(new File("c:\\img\\test.png"));
+            sprite = ImageIO.read(new File("Resources/bilder/testsprite.png"));
         } catch (IOException e) {
             
             e.printStackTrace();
