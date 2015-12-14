@@ -22,15 +22,15 @@ public class Sprite {
 
     private static BufferedImage spriteSheet;
     private static final int TILE_SIZE = 32;
-    
+
     public static BufferedImage loadSprite(String file) {
 
         BufferedImage sprite = null;
-        
+
         try {
             sprite = ImageIO.read(new File("Resources/bilder/testsprite.png"));
         } catch (IOException e) {
-            
+
             e.printStackTrace();
         }
 

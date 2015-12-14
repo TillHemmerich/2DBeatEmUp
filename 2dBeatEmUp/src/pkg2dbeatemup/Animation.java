@@ -13,7 +13,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Animation {
 
     private int frameCount;                 // Counts ticks for change
@@ -101,8 +100,7 @@ public class Animation {
 
                 if (currentFrame > totalFrames - 1) {
                     currentFrame = 0;
-                }
-                else if (currentFrame < 0) {
+                } else if (currentFrame < 0) {
                     currentFrame = totalFrames - 1;
                 }
             }

@@ -5,18 +5,46 @@
  */
 package pkg2dbeatemup;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  *
  * @author Till
  */
-public class Main extends javax.swing.JFrame {
+public class Main extends javax.swing.JFrame implements KeyListener {
 
     /**
      * Creates new form Main
      */
     public Main() {
         initComponents();
+        addKeyListener(this);
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyChar()) {
+            case 'a':
+            case 'A':
+                gamePanel1.getPlayer().setCurrentState(Player.STATE_IDLE_LEFT);
+                break;
+            case 'd':
+            case 'D':
+                gamePanel1.getPlayer().setCurrentState(Player.STATE_IDLE_RIGHT);
+                break;
         }
+        gamePanel1.repaint();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -86,11 +114,12 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void gamePanel1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_gamePanel1KeyReleased
-     
+
     }//GEN-LAST:event_gamePanel1KeyReleased
 
     private void gamePanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gamePanel1MouseDragged
         gamePanel1.repaint();
+
     }//GEN-LAST:event_gamePanel1MouseDragged
 
     /**
@@ -124,10 +153,10 @@ public class Main extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Main().setVisible(true);
-               
+
             }
         });
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
