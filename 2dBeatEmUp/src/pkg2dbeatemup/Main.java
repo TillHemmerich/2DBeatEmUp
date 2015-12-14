@@ -32,6 +32,21 @@ public class Main extends javax.swing.JFrame implements KeyListener {
         switch (e.getKeyChar()) {
             case 'a':
             case 'A':
+                gamePanel1.getPlayer().setCurrentState(Player.STATE_WALKING_LEFT);
+                break;
+            case 'd':
+            case 'D':
+                gamePanel1.getPlayer().setCurrentState(Player.STATE_WALKING_RIGHT);
+                break;
+        }
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        switch (e.getKeyChar()) {
+            case 'a':
+            case 'A':
                 gamePanel1.getPlayer().setCurrentState(Player.STATE_IDLE_LEFT);
                 break;
             case 'd':
@@ -39,11 +54,6 @@ public class Main extends javax.swing.JFrame implements KeyListener {
                 gamePanel1.getPlayer().setCurrentState(Player.STATE_IDLE_RIGHT);
                 break;
         }
-        gamePanel1.repaint();
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
     }
 
     /**

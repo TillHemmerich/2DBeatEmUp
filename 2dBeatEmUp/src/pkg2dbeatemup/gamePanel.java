@@ -15,6 +15,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -26,6 +28,7 @@ import javax.swing.JPanel;
  */
 public class gamePanel extends JPanel {
 
+    int iMax = 28;
     private Player player;
     private Image image = new ImageIcon("Resources/bilder/2d_background.jpg").getImage();
     private Rectangle ground = new Rectangle(0, 0, 0, 0);
@@ -33,7 +36,55 @@ public class gamePanel extends JPanel {
     public gamePanel() {
         player = new Player();
         this.setSize(image.getHeight(this), image.getWidth(this));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int i = 0;
+                while (true) {
 
+                    if (i < iMax) {
+                        i++;
+                    } else if (i == iMax) {
+                        i = 0;
+                    }
+                    switch (player.getCurrentState()) {
+                        case Player.STATE_IDLE_LEFT:
+                            player.setCurrentImage(Sprite.getSprite(1, 1));
+                            break;
+                        case Player.STATE_IDLE_RIGHT:
+                            player.setCurrentImage(Sprite.getSprite(1, 2));
+                            break;
+                        case Player.STATE_WALKING_LEFT:
+                            if (i <= ((double) iMax * 0.33)) {
+                                player.setCurrentImage(Sprite.getSprite(0, 1));
+                            } else if (i <= ((double) iMax * 0.66)) {
+                                player.setCurrentImage(Sprite.getSprite(1, 1));
+                            } else if (i <= (double) iMax) {
+                                player.setCurrentImage(Sprite.getSprite(2, 1));
+                            }
+
+                            break;
+                        case Player.STATE_WALKING_RIGHT:
+                            if (i <= ((double) iMax * 0.33)) {
+                                player.setCurrentImage(Sprite.getSprite(0, 2));
+                            } else if (i <= ((double) iMax * 0.66)) {
+                                player.setCurrentImage(Sprite.getSprite(1, 2));
+                            } else if (i <= (double) iMax) {
+                                player.setCurrentImage(Sprite.getSprite(2, 2));
+                            }
+                            break;
+                        default:
+                            player = null;
+                    }
+                    repaint();
+                    try {
+                        Thread.sleep(1000 / 60);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(gamePanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }).start();
     }
 
     public Player getPlayer() {
@@ -54,25 +105,13 @@ public class gamePanel extends JPanel {
 
     public void paintGround(Graphics2D g) {
         ground.setSize(getWidth(), 50);
-        ground.setLocation(0, getHeight() - 60);
+        ground.setLocation(0, getHeight());
         g.fill(ground);
 
     }
 
     public void paintPlayer(Graphics2D g, String state) {
-        System.out.println(state);
-        BufferedImage player;
-        switch (state) {
-            case Player.STATE_IDLE_LEFT:
-                player = Sprite.getSprite(1, 1);
-                break;
-            case Player.STATE_IDLE_RIGHT:
-                player = Sprite.getSprite(1, 2);
-                break;
-            default:
-                player = null;
-        }
-        g.drawImage(player, null, 500, (int) (getHeight() - 100));
+        g.drawImage(player.getCurrentImage(), null, 500, (int) (getHeight() - 100));
 
     }
 

@@ -19,6 +19,7 @@ public class Player {
     public static final String STATE_IDLE_LEFT = "idle_left";
     public static final String STATE_IDLE_RIGHT = "idle_right";
     private String currentState = STATE_IDLE_RIGHT;
+    private BufferedImage currentImage;
 
     private BufferedImage[] walkingLeft = {Sprite.getSprite(0, 1), Sprite.getSprite(2, 1)}; // Gets the upper left images of my sprite sheet
     private BufferedImage[] walkingRight = {Sprite.getSprite(0, 2), Sprite.getSprite(2, 2)};
@@ -27,6 +28,14 @@ public class Player {
 
     private Animation walkLeft = new Animation(walkingLeft, 10);
     private Animation walkRight = new Animation(walkingRight, 10);
+
+    public BufferedImage getCurrentImage() {
+        return currentImage;
+    }
+
+    public void setCurrentImage(BufferedImage currentImage) {
+        this.currentImage = currentImage;
+    }
 
     public String getCurrentState() {
         return currentState;
