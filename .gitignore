@@ -1,3 +1,11 @@
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+.nb-gradle/
+
 /pingpongextremsickoverloade/nbproject/private/
 /pingpongextremsickoverloade/build/
 /2dBeatEmUp/nbproject/private/
