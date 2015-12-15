@@ -15,12 +15,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import pkg2dbeatemup.abilities.Fireball;
 
 /**
  *
@@ -31,9 +33,12 @@ public class gamePanel extends JPanel {
     int backgroundX;
     int characterMovementSpeed = 28;
     int backgroundScrollSpeed = 6;
+    int fireballSize = 30;
+    int fireballSpeed = 5;
     private Player player;
-    private Image image = new ImageIcon("Resources/bilder/2d_background.jpg").getImage();
+    private Image image = Sprite.loadSprite("2d_background.jpg");
     private Rectangle ground = new Rectangle(0, 0, 0, 0);
+    private ArrayList<Fireball> fireballsList = new ArrayList();
 
     public gamePanel() {
         player = new Player();
@@ -44,6 +49,19 @@ public class gamePanel extends JPanel {
             public void run() {
                 int i = 0;
                 while (true) {
+                    for (int j = 0; j < fireballsList.size(); j++) {
+                        if (fireballsList.get(j).getX() > getWidth() || fireballsList.get(j).getX() < 0 - fireballSize) {
+                            fireballsList.remove(j);
+                        }
+                    }
+                    for (int k = 0; k < fireballsList.size(); k++) {
+                        if (fireballsList.get(k).getDirection() == Fireball.DIRECTION_RIGHT) {
+                            fireballsList.get(k).setX(fireballsList.get(k).getX() + fireballSpeed);
+                        } else if (fireballsList.get(k).getDirection() == Fireball.DIRECTION_LEFT) {
+                            fireballsList.get(k).setX(fireballsList.get(k).getX() - fireballSpeed);
+                        }
+
+                    }
                     //character
                     if (i < characterMovementSpeed) {
                         i++;
@@ -52,28 +70,29 @@ public class gamePanel extends JPanel {
                     }
                     switch (player.getCurrentState()) {
                         case Player.STATE_IDLE_LEFT:
-                            player.setCurrentImage(Sprite.getSprite(1, 1));
+                            player.setCurrentImage(player.IDLE_LEFT);
                             break;
                         case Player.STATE_IDLE_RIGHT:
-                            player.setCurrentImage(Sprite.getSprite(1, 2));
+                            player.setCurrentImage(player.IDLE_RIGHT);
                             break;
                         case Player.STATE_WALKING_LEFT:
                             if (i <= ((double) characterMovementSpeed * 0.33)) {
-                                player.setCurrentImage(Sprite.getSprite(0, 1));
+
+                                player.setCurrentImage(player.WALKING_LEFT[0]);
                             } else if (i <= ((double) characterMovementSpeed * 0.66)) {
-                                player.setCurrentImage(Sprite.getSprite(1, 1));
+                                player.setCurrentImage(player.WALKING_LEFT[1]);
                             } else if (i <= (double) characterMovementSpeed) {
-                                player.setCurrentImage(Sprite.getSprite(2, 1));
+                                player.setCurrentImage(player.WALKING_LEFT[2]);
                             }
 
                             break;
                         case Player.STATE_WALKING_RIGHT:
                             if (i <= ((double) characterMovementSpeed * 0.33)) {
-                                player.setCurrentImage(Sprite.getSprite(0, 2));
+                                player.setCurrentImage(player.WALKING_RIGHT[0]);
                             } else if (i <= ((double) characterMovementSpeed * 0.66)) {
-                                player.setCurrentImage(Sprite.getSprite(1, 2));
+                                player.setCurrentImage(player.WALKING_RIGHT[1]);
                             } else if (i <= (double) characterMovementSpeed) {
-                                player.setCurrentImage(Sprite.getSprite(2, 2));
+                                player.setCurrentImage(player.WALKING_RIGHT[2]);
                             }
                             break;
                         default:
@@ -112,7 +131,8 @@ public class gamePanel extends JPanel {
         g.clearRect(0, 0, getWidth(), getHeight());
         paintBackground((Graphics2D) g);
         paintGround((Graphics2D) g);
-        paintPlayer((Graphics2D) g, player.getCurrentState());
+        paintPlayer((Graphics2D) g);
+        paintFireballs((Graphics2D) g);
     }
 
     public void paintBackground(Graphics2D g) {
@@ -129,9 +149,19 @@ public class gamePanel extends JPanel {
 
     }
 
-    public void paintPlayer(Graphics2D g, String state) {
+    public void paintPlayer(Graphics2D g) {
         g.drawImage(player.getCurrentImage(), null, 500, (int) (getHeight() - 100));
+    }
 
+    public void paintFireballs(Graphics2D g) {
+        for (int i = 0; i < fireballsList.size(); i++) {
+            g.drawImage(fireballsList.get(i).getCurrentImage(), fireballsList.get(i).getX(), fireballsList.get(i).getY(), fireballSize, fireballSize, null);
+        }
+    }
+
+    public void addFireball(int direction) {
+        Fireball fireball = new Fireball(getWidth()/2, getHeight() - 110, direction);
+        fireballsList.add(fireball);
     }
 
 }

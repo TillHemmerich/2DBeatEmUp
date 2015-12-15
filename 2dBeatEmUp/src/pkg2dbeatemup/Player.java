@@ -21,14 +21,13 @@ public class Player {
     private String currentState = STATE_IDLE_RIGHT;
     private BufferedImage currentImage;
 
-    private BufferedImage[] walkingLeft = {Sprite.getSprite(0, 1), Sprite.getSprite(2, 1)}; // Gets the upper left images of my sprite sheet
-    private BufferedImage[] walkingRight = {Sprite.getSprite(0, 2), Sprite.getSprite(2, 2)};
-    private BufferedImage idleLeft = Sprite.getSprite(1, 1);
-    private BufferedImage idleRight = Sprite.getSprite(1, 2);
+    public static final BufferedImage[] WALKING_LEFT = {Sprite.getSprite(0, 1), Sprite.getSprite(1, 1), Sprite.getSprite(2, 1)};
+    public static final BufferedImage[] WALKING_RIGHT = {Sprite.getSprite(0, 2), Sprite.getSprite(1, 2), Sprite.getSprite(2, 2)};
+    public static final BufferedImage IDLE_LEFT = Sprite.getSprite(1, 1);
+    public static final BufferedImage IDLE_RIGHT = Sprite.getSprite(1, 2);
 
-    private Animation walkLeft = new Animation(walkingLeft, 10);
-    private Animation walkRight = new Animation(walkingRight, 10);
-
+//    private Animation walkLeft = new Animation(walkingLeft, 10);
+//    private Animation walkRight = new Animation(walkingRight, 10);
     public BufferedImage getCurrentImage() {
         return currentImage;
     }

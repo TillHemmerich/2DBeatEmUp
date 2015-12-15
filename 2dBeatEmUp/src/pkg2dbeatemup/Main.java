@@ -7,6 +7,7 @@ package pkg2dbeatemup;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import pkg2dbeatemup.abilities.Fireball;
 
 /**
  *
@@ -29,15 +30,27 @@ public class Main extends javax.swing.JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyChar()) {
-            case 'a':
-            case 'A':
+        //System.out.println(e.getKeyCode());
+        switch (e.getKeyCode()) {
+            // Enter
+            case 10:
+                // Feuerball
+                if (gamePanel1.getPlayer().getCurrentState().contains("left")) {
+                    gamePanel1.addFireball(Fireball.DIRECTION_LEFT);
+                } else if (gamePanel1.getPlayer().getCurrentState().contains("right")) {
+                    gamePanel1.addFireball(Fireball.DIRECTION_RIGHT);
+                }
+
+                break;
+            // A
+            case 65:
                 gamePanel1.getPlayer().setCurrentState(Player.STATE_WALKING_LEFT);
                 break;
-            case 'd':
-            case 'D':
+            // D
+            case 68:
                 gamePanel1.getPlayer().setCurrentState(Player.STATE_WALKING_RIGHT);
                 break;
+
         }
 
     }
