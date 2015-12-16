@@ -13,6 +13,11 @@ import java.awt.image.BufferedImage;
  */
 public class Player {
 
+    
+    //Koordinaten
+    private int x;
+    private int y;
+
 //Player states 
     public static final String STATE_WALKING_LEFT = "walking_left";
     public static final String STATE_WALKING_RIGHT = "walking_right";

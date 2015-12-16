@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import pkg2dbeatemup.abilities.Fireball;
+import pkg2dbeatemup.level.LevelParser;
 
 /**
  *
@@ -39,8 +40,10 @@ public class gamePanel extends JPanel {
     private Image image = Sprite.loadSprite("2d_background.jpg");
     private Rectangle ground = new Rectangle(0, 0, 0, 0);
     private ArrayList<Fireball> fireballsList = new ArrayList();
+    LevelParser levelParser;
 
     public gamePanel() {
+        levelParser = new LevelParser(1);
         player = new Player();
         this.setSize(image.getHeight(this), image.getWidth(this));
         backgroundX = 0;
@@ -160,7 +163,7 @@ public class gamePanel extends JPanel {
     }
 
     public void addFireball(int direction) {
-        Fireball fireball = new Fireball(getWidth()/2, getHeight() - 110, direction);
+        Fireball fireball = new Fireball(getWidth() / 2, getHeight() - 110, direction);
         fireballsList.add(fireball);
     }
 
