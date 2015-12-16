@@ -11,12 +11,7 @@ import java.awt.image.BufferedImage;
  *
  * @author Till
  */
-public class Player {
-
-    
-    //Koordinaten
-    private int x;
-    private int y;
+public class Player extends BaseObject {
 
 //Player states 
     public static final String STATE_WALKING_LEFT = "walking_left";
@@ -31,25 +26,11 @@ public class Player {
     public static final BufferedImage IDLE_LEFT = Sprite.getSprite(1, 1);
     public static final BufferedImage IDLE_RIGHT = Sprite.getSprite(1, 2);
 
-    public Player(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public Player(int x, int y, int width, int height) {
+        setX(x);
+        setY(y);
+        setWidth(width);
+        setHeight(height);
     }
 
 //    private Animation walkLeft = new Animation(walkingLeft, 10);

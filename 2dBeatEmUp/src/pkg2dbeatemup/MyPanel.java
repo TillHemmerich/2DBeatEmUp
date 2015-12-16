@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import pkg2dbeatemup.abilities.Fireball;
+import pkg2dbeatemup.input.InputListener;
 import pkg2dbeatemup.level.LevelParser;
 
 /**
@@ -36,19 +37,20 @@ public class MyPanel extends JPanel {
     private int characterAnimationSpeed = 48;
     private int backgroundScrollSpeed = 6;
     private int fireballSize = 30;
-    private int fireballSpeed = 5;
+    private int fireballSpeed = 8;
     private Player player;
     private Image image = Sprite.loadSprite("2d_background.jpg");
     private Image terrain = Sprite.loadSprite("terrain.png");
-    private Rectangle ground = new Rectangle(0, 0, 0, 0);
     private ArrayList<Fireball> fireballsList = new ArrayList();
-    LevelParser levelParser;
+    private LevelParser levelParser;
+    private Rectangle visibleArea;
 
-    public MyPanel(int x, int y) {
+    public MyPanel(int x, int y, InputListener inputListener) {
         setSize(x, y);
-        levelParser = new LevelParser(1);
+        visibleArea = new Rectangle(0, 0, getWidth(), getHeight());
+        levelParser = new LevelParser(1, getHeight());
         tileSize = getHeight() / levelParser.getLevelHeight();
-        player = new Player(100, getHeight() - 68);
+        player = new Player(getWidth() / 2, getHeight() - 68, 40, 40);
 
         backgroundX = 0;
         new Thread(new Runnable() {
@@ -56,9 +58,42 @@ public class MyPanel extends JPanel {
             public void run() {
                 int i = 0;
                 while (true) {
+                    //handle keyboard input
+                    switch (inputListener.getPlayerState()) {
+                        case Player.STATE_IDLE_LEFT:
+                            player.setCurrentState(Player.STATE_IDLE_LEFT);
+                            break;
+                        case Player.STATE_IDLE_RIGHT:
+                            player.setCurrentState(Player.STATE_IDLE_RIGHT);
+                            break;
+                        case Player.STATE_WALKING_LEFT:
+                            player.setCurrentState(Player.STATE_WALKING_LEFT);
+                            break;
+                        case Player.STATE_WALKING_RIGHT:
+                            player.setCurrentState(Player.STATE_WALKING_RIGHT);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (inputListener.isEnterPressed()) {
+                        if (player.getCurrentState().contains("left")) {
+                            addFireball(Fireball.DIRECTION_LEFT);
+                        } else if (player.getCurrentState().contains("right")) {
+                            addFireball(Fireball.DIRECTION_RIGHT);
+                        }
+                    }
+
+//update visivle area
+                    {
+                        visibleArea.setLocation(player.getX() - getWidth() / 2, 0);
+                    }
                     //fireballs
                     for (int j = 0; j < fireballsList.size(); j++) {
-                        if (fireballsList.get(j).getX() > getWidth() || fireballsList.get(j).getX() < 0 - fireballSize) {
+//                        if (fireballsList.get(j).getX() > getWidth() || fireballsList.get(j).getX() < 0 - fireballSize) {
+//                            fireballsList.remove(j);
+//                        }
+                        if (!isVisible(fireballsList.get(j).getRectangle())) {
                             fireballsList.remove(j);
                         }
                     }
@@ -159,28 +194,41 @@ public class MyPanel extends JPanel {
     }
 
     public void paintPlayer(Graphics2D g) {
-        g.drawImage(player.getCurrentImage(), null, getWidth() / 2, (int) (getHeight() - 100));
+        g.drawImage(player.getCurrentImage(), player.getX() - ((int) visibleArea.getX()), player.getY(), player.getWidth(), player.getHeight(), null);
     }
 
     public void paintFireballs(Graphics2D g) {
         for (int i = 0; i < fireballsList.size(); i++) {
-            g.drawImage(fireballsList.get(i).getCurrentImage(), fireballsList.get(i).getX(), fireballsList.get(i).getY(), fireballSize, fireballSize, null);
+            if (isVisible(fireballsList.get(i).getRectangle())) {
+                g.drawImage(fireballsList.get(i).getCurrentImage(), fireballsList.get(i).getX() - ((int) visibleArea.getX()), fireballsList.get(i).getY(), fireballsList.get(i).getWidth(), fireballsList.get(i).getHeight(), null);
+            }
         }
     }
 
     private void paintTiles(Graphics2D g) {
         for (int y = 0; y < levelParser.getLevelHeight(); y++) {
             for (int x = 0; x < levelParser.getLevelWidth(); x++) {
-                if (levelParser.getLevelSymbolAt(x, y) == 'E') {
-                    g.drawImage(terrain, x * tileSize - player.getX(), y * tileSize, tileSize, tileSize, null);
+
+                if (isVisible(levelParser.getTileAt(x, y).getRectangle())) {
+                    if (levelParser.getTileAt(x, y).getType() == 'E') {
+                        g.drawImage(terrain, levelParser.getTileAt(x, y).getX() - ((int) visibleArea.getX()), levelParser.getTileAt(x, y).getY(), levelParser.getTileAt(x, y).getWidth(), levelParser.getTileAt(x, y).getHeight(), null);
+                    }
                 }
             }
-
         }
     }
 
     public void addFireball(int direction) {
-        Fireball fireball = new Fireball(getWidth() / 2, getHeight() - 110, direction);
+        Fireball fireball = new Fireball(player.getX() + player.getWidth() / 2, player.getY(), 20, 20, direction);
         fireballsList.add(fireball);
+    }
+
+    private boolean isVisible(Rectangle r) {
+        if (r.getX() > visibleArea.getX() + visibleArea.getWidth()) {
+            return false;
+        } else if (r.getX() + r.getWidth() < visibleArea.getX()) {
+            return false;
+        }
+        return true;
     }
 }

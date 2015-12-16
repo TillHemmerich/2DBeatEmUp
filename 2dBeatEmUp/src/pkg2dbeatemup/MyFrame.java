@@ -9,23 +9,26 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import pkg2dbeatemup.abilities.Fireball;
+import pkg2dbeatemup.input.InputListener;
 
 /**
  *
  * @author phili
  */
-public class MyFrame extends JFrame implements KeyListener {
+public class MyFrame extends JFrame {
 
+    InputListener inputListener;
     MyPanel gamePanel;
 
     public MyFrame(int x, int y) {
         setSize(x, y);
-        addKeyListener(this);
-        gamePanel = new MyPanel(getWidth(), getHeight());
+        inputListener = new InputListener();
+        addKeyListener(inputListener);
+        gamePanel = new MyPanel(getWidth(), getHeight(), inputListener);
         add(gamePanel);
     }
 
-    @Override
+    /*  @Override
     public void keyTyped(KeyEvent e) {
     }
 
@@ -67,6 +70,5 @@ public class MyFrame extends JFrame implements KeyListener {
                 gamePanel.getPlayer().setCurrentState(Player.STATE_IDLE_RIGHT);
                 break;
         }
-    }
-
+    }*/
 }

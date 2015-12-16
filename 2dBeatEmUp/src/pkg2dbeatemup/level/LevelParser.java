@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import pkg2dbeatemup.BaseObject;
 
 /**
  *
@@ -32,18 +33,19 @@ public class LevelParser {
      */
     //level als 2D Array
     private char[][] level;
+    private Tile[][] tiles;
     //level id
     private int id;
     private File file;
     BufferedReader reader = null;
 
-    public LevelParser(int id) {
+    public LevelParser(int id, int windowHeight) {
         this.id = id;
-        readLevel(id);
+        readLevel(id, windowHeight);
     }
 
-    public char getLevelSymbolAt(int x, int y) {
-        return level[y][x];
+    public Tile getTileAt(int x, int y) {
+        return tiles[y][x];
     }
 
     public int getLevelWidth() {
@@ -55,7 +57,7 @@ public class LevelParser {
     }
 
 //lädt level von Datei in level-Array
-    private void readLevel(int id) {
+    private void readLevel(int id, int windowHeight) {
         try {
             file = new File("Resources/level/level" + id + ".txt");
             reader = new BufferedReader(new FileReader(file));
@@ -66,9 +68,13 @@ public class LevelParser {
                 tmpList.add(line.replace(" ", ""));
             }
             level = new char[tmpList.size()][tmpList.get(0).length()];
+            tiles = new Tile[tmpList.size()][tmpList.get(0).length()];
+            int tileSize = windowHeight / tiles.length;
             for (int i = 0; i < tmpList.size(); i++) {
                 for (int j = 0; j < tmpList.get(i).length(); j++) {
                     level[i][j] = tmpList.get(i).charAt(j);
+                    tiles[i][j] = new Tile(tmpList.get(i).charAt(j), j * tileSize, i * tileSize, tileSize, tileSize);
+
                 }
             }
         } catch (IOException e) {
