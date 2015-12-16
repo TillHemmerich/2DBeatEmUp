@@ -40,11 +40,18 @@ public class LevelParser {
     public LevelParser(int id) {
         this.id = id;
         readLevel(id);
-
     }
 
     public char getLevelSymbolAt(int x, int y) {
         return level[y][x];
+    }
+
+    public int getLevelWidth() {
+        return level[0].length;
+    }
+
+    public int getLevelHeight() {
+        return level.length;
     }
 
 //lädt level von Datei in level-Array

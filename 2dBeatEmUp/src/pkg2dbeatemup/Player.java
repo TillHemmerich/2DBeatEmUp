@@ -31,6 +31,27 @@ public class Player {
     public static final BufferedImage IDLE_LEFT = Sprite.getSprite(1, 1);
     public static final BufferedImage IDLE_RIGHT = Sprite.getSprite(1, 2);
 
+    public Player(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
 //    private Animation walkLeft = new Animation(walkingLeft, 10);
 //    private Animation walkRight = new Animation(walkingRight, 10);
     public BufferedImage getCurrentImage() {
