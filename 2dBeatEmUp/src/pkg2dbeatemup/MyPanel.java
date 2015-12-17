@@ -7,6 +7,7 @@ package pkg2dbeatemup;
 
 import com.sun.javafx.tk.Toolkit;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -47,10 +48,11 @@ public class MyPanel extends JPanel {
 
     public MyPanel(int x, int y, InputListener inputListener) {
         setSize(x, y);
+
         visibleArea = new Rectangle(0, 0, getWidth(), getHeight());
         levelParser = new LevelParser(1, getHeight());
         tileSize = getHeight() / levelParser.getLevelHeight();
-        player = new Player(getWidth() / 2, getHeight() - 68, 40, 40);
+        player = new Player(getWidth() / 2, getHeight() - 72 * 2, 40, 40);
 
         backgroundX = 0;
         new Thread(new Runnable() {
@@ -90,9 +92,7 @@ public class MyPanel extends JPanel {
                     }
                     //fireballs
                     for (int j = 0; j < fireballsList.size(); j++) {
-//                        if (fireballsList.get(j).getX() > getWidth() || fireballsList.get(j).getX() < 0 - fireballSize) {
-//                            fireballsList.remove(j);
-//                        }
+
                         if (!isVisible(fireballsList.get(j).getRectangle())) {
                             fireballsList.remove(j);
                         }
@@ -106,6 +106,12 @@ public class MyPanel extends JPanel {
 
                     }
                     //character
+                    if (inputListener.isSpacePressed()) {
+                        player.setY(player.getY() - 4);
+                    }
+                    if (levelParser.getTileAt(player.getX(), player.getY() + player.getHeight(), tileSize).getType() != 'E') {
+                        player.setY(player.getY() + 2);
+                    }
                     if (i < characterAnimationSpeed) {
                         i++;
                     } else if (i == characterAnimationSpeed) {
@@ -120,7 +126,7 @@ public class MyPanel extends JPanel {
                             break;
                         case Player.STATE_WALKING_LEFT:
 
-                            if (player.getX() > 0) {
+                            if (player.getX() > 0 && levelParser.getTileAt(player.getX(), player.getY(), tileSize).getType() != 'E') {
                                 player.setX(player.getX() - 5);
                                 if (i <= ((double) characterAnimationSpeed * 0.33)) {
 
@@ -136,15 +142,21 @@ public class MyPanel extends JPanel {
                             break;
 
                         case Player.STATE_WALKING_RIGHT:
-                            player.setX(player.getX() + 5);
-                            if (i <= ((double) characterAnimationSpeed * 0.33)) {
-                                player.setCurrentImage(player.WALKING_RIGHT[0]);
-                            } else if (i <= ((double) characterAnimationSpeed * 0.66)) {
-                                player.setCurrentImage(player.WALKING_RIGHT[1]);
-                            } else if (i <= (double) characterAnimationSpeed) {
-                                player.setCurrentImage(player.WALKING_RIGHT[2]);
+                            if (levelParser.getTileAt(player.getX() + player.getWidth(), player.getY(), tileSize).getType() != 'E') {
+                                player.setX(player.getX() + 5);
+
+                                if (i <= ((double) characterAnimationSpeed * 0.33)) {
+                                    player.setCurrentImage(player.WALKING_RIGHT[0]);
+                                } else if (i <= ((double) characterAnimationSpeed * 0.66)) {
+                                    player.setCurrentImage(player.WALKING_RIGHT[1]);
+                                } else if (i <= (double) characterAnimationSpeed) {
+                                    player.setCurrentImage(player.WALKING_RIGHT[2]);
+                                }
+                            } else {
+                                player.setCurrentState(Player.STATE_IDLE_RIGHT);
                             }
                             break;
+
                         default:
                             player = null;
                     }

@@ -44,8 +44,12 @@ public class LevelParser {
         readLevel(id, windowHeight);
     }
 
-    public Tile getTileAt(int x, int y) {
-        return tiles[y][x];
+    public Tile getTileAt(int gridX, int gridY) {
+        return tiles[gridY][gridX];
+    }
+
+    public Tile getTileAt(int x, int y, int tileSize) {
+        return tiles[y / tileSize][x / tileSize];
     }
 
     public int getLevelWidth() {
@@ -70,11 +74,12 @@ public class LevelParser {
             level = new char[tmpList.size()][tmpList.get(0).length()];
             tiles = new Tile[tmpList.size()][tmpList.get(0).length()];
             int tileSize = windowHeight / tiles.length;
+            System.out.println("tileSize: " + tileSize);
+
             for (int i = 0; i < tmpList.size(); i++) {
                 for (int j = 0; j < tmpList.get(i).length(); j++) {
                     level[i][j] = tmpList.get(i).charAt(j);
                     tiles[i][j] = new Tile(tmpList.get(i).charAt(j), j * tileSize, i * tileSize, tileSize, tileSize);
-
                 }
             }
         } catch (IOException e) {

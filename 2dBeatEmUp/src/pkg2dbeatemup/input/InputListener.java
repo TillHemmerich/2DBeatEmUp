@@ -18,6 +18,7 @@ public class InputListener implements KeyListener {
     private boolean dPressed = false;
     private boolean aPressed = false;
     private boolean enterPressed = false;
+    private boolean spacePressed = false;
     private String playerState = Player.STATE_IDLE_RIGHT;
 
     @Override
@@ -42,6 +43,10 @@ public class InputListener implements KeyListener {
                 dPressed = true;
                 playerState = Player.STATE_WALKING_RIGHT;
                 break;
+            //space
+            case 32:
+                spacePressed = true;
+                break;
 
         }
     }
@@ -59,10 +64,18 @@ public class InputListener implements KeyListener {
                 dPressed = false;
                 playerState = Player.STATE_IDLE_RIGHT;
                 break;
+            //enter
             case 10:
                 enterPressed = false;
                 break;
+            //space
+            case 32:
+                spacePressed = false;
         }
+    }
+
+    public boolean isSpacePressed() {
+        return spacePressed;
     }
 
     public String getPlayerState() {
